@@ -93,17 +93,18 @@ class UserController extends Controller
 
         $request->validate([
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'password-temporal' => ['required'],
+            'password_temporal' => ['required'],
 
         ]);
 
         $user = auth()->user();
-        if (!Hash::check($request->password_temporal, $user->password)) {
-            return response()->json(['error' => 'La contraseña temporal es incorrecta'], 403);
-        }
+
         /* Actualizar usuario */
         if (!Gate::allows('update', [User::class, $user])) {
             return response()->json(['error' => 'La constraseña solo se puede editar una vez'], 403);
+        }
+        if (!Hash::check($request->password_temporal, $user->password)) {
+            return response()->json(['error' => 'La contraseña temporal es incorrecta'], 403);
         }
         $user->password = Hash::make($request->password);
         $user->defaultPassword = 0;

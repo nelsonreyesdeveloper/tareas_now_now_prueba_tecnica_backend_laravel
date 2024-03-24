@@ -24,7 +24,7 @@
             <span class="font-semibold text-gray-700" >Tipo de Cuenta:</span> {{$data['tipo-rol']}}
         </p>
         <br>
-        <a href="{{ env('FRONTEND_URL') }}?user={{ $data['email'] }}&password={{$data['contrasena-temporal'] }"class="inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-700 text-white rounded-lg font-semibold">
+        <a href="{{ env('FRONTEND_URL') }}?user={{ $data['email'] }}&password={{$data['contrasena-temporal'] }}"class="inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-700 text-white rounded-lg font-semibold">
             Haz clic aquí para acceder al sistema.
         </a>
     </div>
