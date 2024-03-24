@@ -20,8 +20,8 @@ use Illuminate\Support\Facades\Route;
 route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
-    Route::post('users', [UserController::class, 'store']);
     Route::put('users', [UserController::class, 'update']);
+    Route::post('users', [UserController::class, 'store']);
 });
 
 Route::post('login', [AuthController::class, 'login']);

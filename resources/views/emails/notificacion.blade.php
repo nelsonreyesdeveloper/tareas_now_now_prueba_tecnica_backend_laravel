@@ -20,11 +20,11 @@
         <br>
         <p class="text-gray-600 leading-relaxed">
             <span class="font-semibold text-gray-700" >Email:</span>  {{$data['email']}} <br>
-            <span class="font-semibold text-gray-700" >Contraseña Temporal:</span> {{$data['password']}}<br>
+            <span class="font-semibold text-gray-700" >Contraseña Temporal:</span> {{ $data['contrasena-temporal']}}<br>
             <span class="font-semibold text-gray-700" >Tipo de Cuenta:</span> {{$data['tipo-rol']}}
         </p>
         <br>
-        <a href="{{ env('FRONTEND_URL') }}?user={{ $data['email'] }}&password={{ $data['password'] }}"class="inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-700 text-white rounded-lg font-semibold">
+        <a href="{{ env('FRONTEND_URL') }}?user={{ $data['email'] }}&password={{$data['contrasena-temporal'] }"class="inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-700 text-white rounded-lg font-semibold">
             Haz clic aquí para acceder al sistema.
         </a>
     </div>

@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterUserRequest;
 use App\Models\user;
-use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -43,17 +44,25 @@ class UserController extends Controller
         /* generar contraseña temporal para el usuario de 8 caracteres */
         $contrasenaTemporal = Str::random(8);
 
-        $user = User::create([
+        $usuario = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' =>  Hash::make($contrasenaTemporal),
+            'password' => Hash::make($contrasenaTemporal),
         ]);
-        $role = $request->input('tipo-rol') == 1 ? 'super-admin' : 'empleado';
-        $user->assignRole($role);
-        $user['tipo-rol'] = $role;
+
+
+        $rol = $request->input('tipo-rol') == 1 ? 'super-admin' : 'empleado';
+
+        $roleBD = Role::where('name', $rol)->first();
+
+        // Valide el rol antes de asignarlo
+        $usuario->assignRole($roleBD);
+
+        $usuario['tipo-rol'] = $rol;
+        $usuario['contrasena-temporal'] = $contrasenaTemporal;
 
         /*Mandar email para informarle que se creo su cuenta pero que tiene que activarla poniendo una contras */
-        Mail::send('emails.notificacion', ['data' => $user], function ($message) {
+        Mail::send('emails.notificacion', ['data' => $usuario], function ($message) {
             $message->to('correo@ejemplo.com')->subject('Creacion de cuenta | now now Prueba Tecnica ');
         });
 
@@ -84,12 +93,16 @@ class UserController extends Controller
 
         $request->validate([
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password-temporal' => ['required'],
 
         ]);
-        $user = auth()->user();
 
+        $user = auth()->user();
+        if (!Hash::check($request->password_temporal, $user->password)) {
+            return response()->json(['error' => 'La contraseña temporal es incorrecta'], 403);
+        }
         /* Actualizar usuario */
-        if (!Gate::allows('update', [User::class,$user])) {
+        if (!Gate::allows('update', [User::class, $user])) {
             return response()->json(['error' => 'La constraseña solo se puede editar una vez'], 403);
         }
         $user->password = Hash::make($request->password);

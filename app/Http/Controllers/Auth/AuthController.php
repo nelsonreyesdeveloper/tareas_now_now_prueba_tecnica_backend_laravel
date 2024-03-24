@@ -24,12 +24,11 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken('authToken')->plainTextToken;
-        
 
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'user' => $user->with('roles')
+            'user' => User::find($user->id)->with('roles')->first(),
         ], 201);
     }
 
