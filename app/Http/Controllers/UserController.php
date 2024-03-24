@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterUserRequest;
 use App\Models\user;
+use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -70,7 +71,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(user $user)
+    public function edit(User $user)
     {
         //
     }
@@ -78,11 +79,25 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, user $user)
+    public function update(Request $request)
     {
-        //
-    }
 
+        $request->validate([
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+
+        ]);
+        $user = auth()->user();
+
+        /* Actualizar usuario */
+        if (!Gate::allows('update', [User::class,$user])) {
+            return response()->json(['error' => 'La constraseña solo se puede editar una vez'], 403);
+        }
+        $user->password = Hash::make($request->password);
+        $user->defaultPassword = 0;
+        $user->save();
+
+        return response()->json(['success' => 'Contraseña actualizada correctamente'], 200);
+    }
     /**
      * Remove the specified resource from storage.
      */

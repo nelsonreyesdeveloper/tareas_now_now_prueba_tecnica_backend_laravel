@@ -21,6 +21,7 @@ route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
     Route::post('users', [UserController::class, 'store']);
+    Route::put('users', [UserController::class, 'update']);
 });
 
 Route::post('login', [AuthController::class, 'login']);
@@ -28,4 +29,3 @@ Route::post('login', [AuthController::class, 'login']);
 
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
-
