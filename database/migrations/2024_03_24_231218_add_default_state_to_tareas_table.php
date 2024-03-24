@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('tareas', function (Blueprint $table) {
+            // Add a new column for 'estado' (assuming your state column is named 'estado')
+            $table->unsignedInteger('estado')->default(1);
         });
     }
 
@@ -22,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::table('tareas', function (Blueprint $table) {
+            $table->dropColumn('estado');
+        });
     }
 };

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TareaRequest;
 use App\Models\Tarea;
 use Illuminate\Http\Request;
 
@@ -20,13 +21,13 @@ class TareaController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TareaRequest $request)
     {
         //
     }
