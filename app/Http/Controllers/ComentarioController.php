@@ -51,7 +51,6 @@ class ComentarioController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Comentario creado',
-            'data' => $comentario
         ]);
     }
 
