@@ -24,12 +24,18 @@ class TareaPolicy
         //
     }
 
+    public function modifyEmployeeTask(User $user, Tarea $tarea): bool
+    {
+        return $user->hasRole('super-admin') ? true : false;
+    }
+
+
     /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
     {
-        //
+        return $user->hasRole('super-admin') ? true : false;
     }
 
     /**
@@ -37,15 +43,15 @@ class TareaPolicy
      */
     public function update(User $user, Tarea $tarea): bool
     {
-        //
+        return  $user->hasRole('super-admin') || $tarea->user_id === $user->id ? true : false;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Tarea $tarea): bool
+    public function delete(User $user): bool
     {
-        //
+        return $user->hasRole('super-admin') ? true : false;
     }
 
     /**

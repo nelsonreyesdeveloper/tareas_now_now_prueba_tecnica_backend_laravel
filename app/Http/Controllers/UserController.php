@@ -15,21 +15,6 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -38,7 +23,7 @@ class UserController extends Controller
     {
 
         if (!Gate::allows('create', User::class)) {
-            return response()->json(['error' => 'No tiene permisos para crear usuarios'], 403);
+            return response()->json(['success' => false, 'error' => 'No tiene permisos para crear usuarios'], 403);
         }
 
         /* generar contraseña temporal para el usuario de 8 caracteres */
@@ -66,24 +51,9 @@ class UserController extends Controller
             $message->to('correo@ejemplo.com')->subject('Creacion de cuenta | now now Prueba Tecnica ');
         });
 
-        return response()->json(['success' => 'Usuario creado correctamente'], 201);
+        return response()->json(['success' => true, 'message' => 'Usuario creado correctamente'], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(user $user)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $user)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -101,16 +71,15 @@ class UserController extends Controller
 
         /* Actualizar usuario */
         if (!Gate::allows('update', [User::class, $user])) {
-            return response()->json(['error' => 'La constraseña solo se puede editar una vez'], 403);
+            return response()->json(['success' => false, 'error' => 'La constraseña solo se puede editar una vez'], 403);
         }
         if (!Hash::check($request->password_temporal, $user->password)) {
-            return response()->json(['error' => 'La contraseña temporal es incorrecta'], 403);
+            return response()->json(['success' => false, 'error' => 'La contraseña temporal es incorrecta'], 403);
         }
         $user->password = Hash::make($request->password);
         $user->defaultPassword = 0;
         $user->save();
-
-        return response()->json(['success' => 'Contraseña actualizada correctamente'], 200);
+        return response()->json(['success' => true, 'message' => 'Contraseña actualizada correctamente'], 200);
     }
     /**
      * Remove the specified resource from storage.

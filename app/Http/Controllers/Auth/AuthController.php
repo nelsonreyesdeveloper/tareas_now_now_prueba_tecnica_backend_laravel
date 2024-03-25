@@ -20,12 +20,13 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['error' => 'Credenciales inválidas'], 401);
+            return response()->json(['success' => false, 'error' => 'Credenciales inválidas'], 401);
         }
 
         $token = $user->createToken('authToken')->plainTextToken;
 
         return response()->json([
+            'success' => true,
             'access_token' => $token,
             'token_type' => 'bearer',
             'user' => User::find($user->id)->with('roles')->first(),
@@ -35,7 +36,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
-        return response()->json(['message' => 'Sesion finalizada'], 200);
+        return response()->json(['success' => true, 'message' => 'Sesion finalizada'], 200);
     }
 
     public function forgotPassword(Request $request)
@@ -46,7 +47,7 @@ class AuthController extends Controller
 
 
         if (!$user) {
-            return response()->json(['error' => 'Usuario no encontrado'], 404);
+            return response()->json(['success' => false, 'error' => 'Usuario no encontrado'], 404);
         }
         $password_reset_token_anterior = DB::table('password_reset_tokens')->where('email', $request->email)->first();
 
@@ -69,7 +70,7 @@ class AuthController extends Controller
             $message->to($user->email)->subject('Restablecimiento de contraseña');
         });
 
-        return response()->json(['message' => 'Se ha enviado un correo electrónico con las instrucciones para restablecer la contraseña'], 200);
+        return response()->json(['success' => true, 'message' => 'Se ha enviado un correo electrónico con las instrucciones para restablecer la contraseña'], 200);
     }
 
     public function resetPassword(Request $request)
@@ -84,12 +85,12 @@ class AuthController extends Controller
 
 
         if (!$user || !Hash::check($request->token, $password_reset_token->token)) {
-            return response()->json(['error' => 'Credenciales inválidas'], 401);
+            return response()->json(['success' => false, 'error' => 'Credenciales inválidas'], 401);
         }
 
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return response()->json(['message' => 'Contraseña actualizada correctamente'], 200);
+        return response()->json(['success' => true, 'message' => 'Contraseña actualizada correctamente'], 200);
     }
 }

@@ -22,9 +22,17 @@ class TareaRequest extends FormRequest
     public function rules(): array
     {
         return [
-           'titulo' => 'required',
-           'descripcion' => 'required',
-           'estado' => 'required',
+            'titulo' => 'required',
+            'descripcion' => 'required',
+            'user_id' => 'required', 'integer',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'required' => 'El campo :attribute es obligatorio.',
+            'integer' => 'El campo :attribute debe ser un número.',
         ];
     }
 }
