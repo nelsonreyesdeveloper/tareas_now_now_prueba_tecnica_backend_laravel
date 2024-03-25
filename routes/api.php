@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\TareaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,11 @@ route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::put('users', [UserController::class, 'update']);
     Route::post('users', [UserController::class, 'store']);
+
+    Route::post('tareas', [TareaController::class, 'store']);
+    Route::delete('tareas/{id}', [TareaController::class, 'destroy']);
+    Route::put('tareas/{id}', [TareaController::class, 'modifyEmployee']);
+    Route::patch('tareas/{id}', [TareaController::class, 'update']);
 });
 
 Route::post('login', [AuthController::class, 'login']);
