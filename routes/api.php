@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\TareaController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +17,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+
+    Route::put('users', [UserController::class, 'update']);
+    Route::post('users', [UserController::class, 'store']);
+
+    Route::post('tareas', [TareaController::class, 'store']);
+    Route::delete('tareas/{id}', [TareaController::class, 'destroy']);
+    Route::put('tareas/{id}', [TareaController::class, 'modifyEmployee']);
+    Route::patch('tareas/{id}', [TareaController::class, 'update']);
 });
+
+Route::post('login', [AuthController::class, 'login']);
+
+
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
