@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArchivoController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\TareaController;
@@ -32,6 +33,7 @@ route::group(['middleware' => 'auth:sanctum'], function () {
 
 
     Route::post('comentarios', [ComentarioController::class, 'store']);
+    Route::post('archivos', [ArchivoController::class, 'store']);
 });
 
 Route::post('login', [AuthController::class, 'login']);

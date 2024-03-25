@@ -30,7 +30,7 @@ class ComentarioController extends Controller
     {
         $this->validate($request, [
             'comentario' => 'required',
-            'tarea_id' => 'required'
+            'tarea_id' => 'required',
         ]);
 
         $tarea = Tarea::find($request->tarea_id);
