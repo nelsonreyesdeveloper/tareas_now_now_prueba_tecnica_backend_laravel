@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Archivo extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'nombreUnico',
+        'nombreOriginal',
+        'tipo',
+        'tamanio',
+        'ruta',
+        'user_id',
+        'tarea_id',
+    ];
 }
