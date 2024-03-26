@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\TareaController;
 use App\Http\Controllers\UserController;
+use App\Models\Archivo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,8 @@ route::group(['middleware' => 'auth:sanctum'], function () {
 
 
     Route::post('comentarios', [ComentarioController::class, 'store']);
+
+    Route::delete('archivos/{id}', [ArchivoController::class, 'destroy']);
     Route::post('archivos', [ArchivoController::class, 'store']);
 });
 
