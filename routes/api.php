@@ -36,6 +36,7 @@ route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('comentarios', [ComentarioController::class, 'store']);
 
     Route::delete('archivos/{id}', [ArchivoController::class, 'destroy']);
+    Route::post('archivos', [ArchivoController::class, 'store']);
 });
 
 Route::post('login', [AuthController::class, 'login']);
