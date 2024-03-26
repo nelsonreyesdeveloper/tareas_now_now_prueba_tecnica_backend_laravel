@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Archivo;
 use App\Models\Tarea;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -71,7 +72,7 @@ class ArchivoController extends Controller
 
         $pathinfo = pathinfo($rutaArchivo);
 
-      
+
         // Crear un nuevo modelo de archivo adjunto
         $archivoAdjunto = new Archivo([
             'nombreUnico' => $pathinfo['filename'],
@@ -103,7 +104,7 @@ class ArchivoController extends Controller
         //
     }
 
-   
+
     /**
      * Remove the specified resource from storage.
      */
@@ -127,5 +128,7 @@ class ArchivoController extends Controller
             return response()->json(['success' => false, 'error' => 'No tiene permisos para eliminar este archivo'], 403);
         }
         $archivo->delete();
+
+        return response()->json(['success' => true, 'message' => 'Archivo eliminado correctamente','user' => User::find(auth()->user()->id)->with('roles')->first() ], 200);
     }
 }
