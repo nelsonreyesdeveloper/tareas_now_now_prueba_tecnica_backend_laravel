@@ -129,6 +129,6 @@ class ArchivoController extends Controller
         }
         $archivo->delete();
 
-        return response()->json(['success' => true, 'message' => 'Archivo eliminado correctamente','user' => User::find(auth()->user()->id)->with('roles')->first() ], 200);
+        return response()->json(['success' => true, 'message' => 'Archivo eliminado correctamente'], 200);
     }
 }
