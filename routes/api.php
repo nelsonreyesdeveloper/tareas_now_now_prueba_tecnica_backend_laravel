@@ -27,6 +27,8 @@ route::group(['middleware' => 'auth:sanctum'], function () {
     Route::put('users', [UserController::class, 'update']);
     Route::post('users', [UserController::class, 'store']);
 
+    Route::get('tareas', [TareaController::class, 'index']);
+    
     Route::post('tareas', [TareaController::class, 'store']);
     Route::delete('tareas/{id}', [TareaController::class, 'destroy']);
     Route::put('tareas/{id}', [TareaController::class, 'modifyEmployee']);
