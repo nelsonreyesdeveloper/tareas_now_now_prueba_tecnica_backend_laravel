@@ -19,6 +19,16 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+    public function index(Request $request)
+    {
+        $users = User::when($request->has('search'), function ($query) use ($request) {
+            $query->where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('email', 'like', '%' . $request->search . '%');
+        })->with('roles')->paginate(10);
+
+        return response()->json($users);
+    }
     public function store(RegisterUserRequest $request): JsonResponse
     {
 
