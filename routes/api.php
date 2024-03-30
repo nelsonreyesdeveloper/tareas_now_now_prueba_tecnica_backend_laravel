@@ -34,7 +34,7 @@ route::group(['middleware' => 'auth:sanctum'], function () {
     Route::put('users', [UserController::class, 'update']);
 
     Route::get('users', [UserController::class, 'index']);
-    
+
     Route::post('users', [UserController::class, 'store']);
 
     Route::get('tareas', [TareaController::class, 'index']);
@@ -46,7 +46,9 @@ route::group(['middleware' => 'auth:sanctum'], function () {
 
 
     Route::post('comentarios', [ComentarioController::class, 'store']);
+    Route::delete('comentarios', [ComentarioController::class, 'destroy']);
 
+    Route::get('archivos', [ArchivoController::class, 'show']);
     Route::delete('archivos/{id}', [ArchivoController::class, 'destroy']);
     Route::post('archivos', [ArchivoController::class, 'store']);
 });

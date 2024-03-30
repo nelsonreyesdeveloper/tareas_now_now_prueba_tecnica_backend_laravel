@@ -19,11 +19,11 @@ class TareaController extends Controller
 
         $titulo = $request->get('titulo');
 
-        $tareas = Tarea::with('comentarios.user', 'archivos.user','user')
+        $tareas = Tarea::with('comentarios.user', 'archivos.user', 'user')
             ->when($titulo, function ($query) use ($titulo) {
                 $query->where('titulo', 'like', '%' . $titulo . '%');
             })
-            ->paginate($request->page ?? 10);
+            ->paginate($request->porpage ?? 10);
 
         return response()->json([
             'success' => true,
@@ -79,6 +79,9 @@ class TareaController extends Controller
         }
 
         $tarea->user_id = $request->get('user_id');
+        $tarea->descripcion = $request->get('descripcion');
+        $tarea->titulo = $request->get('titulo');
+    
         $tarea->save();
 
         return response()->json([
@@ -142,6 +145,8 @@ class TareaController extends Controller
             return response()->json(['success' => false, 'error' => 'La tarea no existe'], 404);
         }
         // ... resto del código para eliminar la tarea ...
+
+        $tarea->delete();
 
         // Responder con éxito o error
         return response()->json([
