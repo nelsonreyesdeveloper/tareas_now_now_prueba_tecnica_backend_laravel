@@ -11,19 +11,29 @@
 - Paso 2 : Para el envio de emails de PRUEBA podemos configurar las siguientes variables de entorno:
 
 MAIL_MAILER=smtp
+
 MAIL_HOST=sandbox.smtp.mailtrap.io
+
 MAIL_PORT=2525
+
 MAIL_USERNAME= *user*  ->aqui debe de ir la de nuestra cuenta de mailtrap
+
 MAIL_PASSWORD= *password* ->aqui debe de ir la de nuestra cuenta de mailtrap
 
 - Paso 3 : Debemos configurar correctamente nuesta base de datos local : 
 
 DB_CONNECTION=mysql
+
 DB_HOST=127.0.0.1
+
 DB_PORT=3306
+
 DB_DATABASE=prueba-tecnica-now-now   ->Nuestra BD
+
 DB_USERNAME=root  -> Nuestro user de acceso a mysql
+
 DB_PASSWORD=    ->nuestro password en caso de tener
+
 
 - Paso 4 : Debemos ejecutar el comando: php artisan storage:link 
 
