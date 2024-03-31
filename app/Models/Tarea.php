@@ -30,4 +30,9 @@ class Tarea extends Model
     {
         return $this->hasMany(Archivo::class);
     }
+
+    public function estado()
+    {
+        return $this->belongsTo(Estado::class);
+    }
 }

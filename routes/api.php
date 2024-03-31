@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArchivoController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ComentarioController;
+use App\Http\Controllers\GenerarReporteController;
 use App\Http\Controllers\TareaController;
 use App\Http\Controllers\UserController;
 use App\Models\Archivo;
@@ -38,6 +39,8 @@ route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('users', [UserController::class, 'store']);
 
     Route::get('tareas', [TareaController::class, 'index']);
+
+    Route::post('generar-reporte', [GenerarReporteController::class, 'index']);
 
     Route::post('tareas', [TareaController::class, 'store']);
     Route::delete('tareas/{id}', [TareaController::class, 'destroy']);
