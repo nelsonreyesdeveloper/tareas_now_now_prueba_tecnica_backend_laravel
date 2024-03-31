@@ -24,12 +24,14 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken('authToken')->plainTextToken;
+        $id = $user->id;
+
+        //quiero iterar el usuario que contega el $id y retornalo en la variable $userlogin
 
         return response()->json([
             'success' => true,
             'access_token' => $token,
             'token_type' => 'bearer',
-            'user' => User::find($user->id)->with('roles')->first(),
         ], 201);
     }
 
@@ -48,6 +50,10 @@ class AuthController extends Controller
 
         if (!$user) {
             return response()->json(['success' => false, 'error' => 'Usuario no encontrado'], 404);
+        }
+
+        if ($user->defaultPassword == 1) {
+            return response()->json(['success' => false, 'error' => 'Tienes la contraseña por default, primero debes cambiarla inciando sesion.'], 404);
         }
         $password_reset_token_anterior = DB::table('password_reset_tokens')->where('email', $request->email)->first();
 
@@ -90,6 +96,10 @@ class AuthController extends Controller
 
         $user->password = Hash::make($request->password);
         $user->save();
+
+        /* borrar el token actual */
+
+        DB::table('password_reset_tokens')->where('email', $request->email)->delete();
 
         return response()->json(['success' => true, 'message' => 'Contraseña actualizada correctamente'], 200);
     }

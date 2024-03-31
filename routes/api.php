@@ -3,9 +3,11 @@
 use App\Http\Controllers\ArchivoController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ComentarioController;
+use App\Http\Controllers\GenerarReporteController;
 use App\Http\Controllers\TareaController;
 use App\Http\Controllers\UserController;
 use App\Models\Archivo;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,10 +24,23 @@ use Illuminate\Support\Facades\Route;
 
 
 route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::post('logout', [AuthController::class, 'logout']);
 
+    Route::get('user', function (Request $request) {
+        $user = User::where('id', $request->user()->id)->with('roles')->first();
+
+        return response()->json($user);
+    });
+
+    Route::post('logout', [AuthController::class, 'logout']);
     Route::put('users', [UserController::class, 'update']);
+
+    Route::get('users', [UserController::class, 'index']);
+
     Route::post('users', [UserController::class, 'store']);
+
+    Route::get('tareas', [TareaController::class, 'index']);
+
+    Route::post('generar-reporte', [GenerarReporteController::class, 'index']);
 
     Route::post('tareas', [TareaController::class, 'store']);
     Route::delete('tareas/{id}', [TareaController::class, 'destroy']);
@@ -34,7 +49,9 @@ route::group(['middleware' => 'auth:sanctum'], function () {
 
 
     Route::post('comentarios', [ComentarioController::class, 'store']);
+    Route::delete('comentarios', [ComentarioController::class, 'destroy']);
 
+    Route::get('archivos', [ArchivoController::class, 'show']);
     Route::delete('archivos/{id}', [ArchivoController::class, 'destroy']);
     Route::post('archivos', [ArchivoController::class, 'store']);
 });

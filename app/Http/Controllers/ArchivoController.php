@@ -99,9 +99,26 @@ class ArchivoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Archivo $archivo)
+    public function show(Request $request)
+
     {
-        //
+
+
+        $rutaarchivo = Storage::disk('public')->path($request->ruta);
+
+        
+
+        if (!Storage::disk('public')->exists($request->ruta)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Archivo no encontrado',
+            ], 404);
+        }
+
+        // $archivo = Storage::disk('public')->get($request->ruta);
+
+
+        return response()->file($rutaarchivo);
     }
 
 
