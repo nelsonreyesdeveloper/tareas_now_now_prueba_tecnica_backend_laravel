@@ -16,9 +16,13 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
             'name' => 'Admin',
-            'email' => 'eliasoficialbunnises@gmail.com',
+            'email' => 'admin@gmail.com',
             'password' => Hash::make('12345678'),
+            'defaultPassword' => 0,
+
         ]);
+
+
 
         /* asignarle ul rol */
         DB::table('model_has_roles')->insert([

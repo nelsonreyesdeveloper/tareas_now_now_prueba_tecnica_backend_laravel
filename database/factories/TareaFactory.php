@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Estado;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,11 @@ class TareaFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'titulo' => $this->faker->title('10'),
+            'descripcion' => $this->faker->text('100'),
+            'estado_id' => Estado::all()->random()->id,
+            'user_id' => User::all()->random()->id,
+            
         ];
     }
 }
