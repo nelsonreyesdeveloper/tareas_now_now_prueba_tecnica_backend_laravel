@@ -22,7 +22,7 @@ class TareaController extends Controller
         $tareas = Tarea::with('comentarios.user', 'archivos.user', 'user')
             ->when($titulo, function ($query) use ($titulo) {
                 $query->where('titulo', 'like', '%' . $titulo . '%');
-            })
+            })->orderBy('created_at', 'desc')
             ->paginate($request->porpage ?? 10);
 
         return response()->json([
@@ -81,7 +81,7 @@ class TareaController extends Controller
         $tarea->user_id = $request->get('user_id');
         $tarea->descripcion = $request->get('descripcion');
         $tarea->titulo = $request->get('titulo');
-    
+
         $tarea->save();
 
         return response()->json([
