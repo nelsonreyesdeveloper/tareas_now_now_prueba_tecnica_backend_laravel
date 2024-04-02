@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterUserRequest;
-use App\Models\user;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -33,7 +33,7 @@ class UserController extends Controller
     {
 
         if (!Gate::allows('create', User::class)) {
-            return response()->json(['success' => false, 'error' => 'No tiene permisos para crear usuarios'], 403);
+            return response()->json(['success' => false, 'error' => 'No tiene permisos para crear usuarios','user' => auth()->user()->hasRole('super-admin')], 403);
         }
 
         /* generar contraseña temporal para el usuario de 8 caracteres */
@@ -57,8 +57,8 @@ class UserController extends Controller
         $usuario['contrasena-temporal'] = $contrasenaTemporal;
 
         /*Mandar email para informarle que se creo su cuenta pero que tiene que activarla poniendo una contras */
-        Mail::send('emails.notificacion', ['data' => $usuario], function ($message) {
-            $message->to('correo@ejemplo.com')->subject('Creacion de cuenta | now now Prueba Tecnica ');
+        Mail::send('emails.notificacion', ['data' => $usuario], function ($message) use ($request) {
+            $message->from('nelsonreyesyt@gmail.com','Nelson Reyes')->to($request->email)->subject('Creacion de cuenta | now now Prueba Tecnica ');
         });
 
         return response()->json(['success' => true, 'message' => 'Usuario creado correctamente'], 201);
